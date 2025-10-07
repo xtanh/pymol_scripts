@@ -1,0 +1,16 @@
+用法:
+1.找到你电脑.pymolrc的文件路径，替换为我发的文件夹中的pymolrc  【注意把pymolrc 改为.pymolrc，确保文件夹的所有文件和.pymolrc在同一目录下，也可自行修改】
+
+2.其他那些可以自己调整，比如 V1-V5,脚本都有
+
+3.比如：
+fetch 7epf后
+1）输入：show_residues("7epf","J9U")
+2）再输入：show_cavities("7epf")
+3）再输入：cg
+就可以显示空腔～
+
+
+
+谢谢！祝生活愉快！
+

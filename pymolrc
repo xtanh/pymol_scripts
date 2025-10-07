@@ -1,0 +1,158 @@
+import pymol
+from pymol import cmd
+
+sys.path.append("./pymol_python3_scripts")
+
+from pymol_python3_scripts import *
+
+alias pbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB; util.cnc;
+alias ipbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB and interface; util.cnc;
+
+alias npbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000002; spectrum b, red_green, chainB; util.cnc;
+alias inpbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000002; spectrum b, red_green, chainB and interfaceB; util.cnc;
+
+alias dl, color gray80, chainA; color white, chainB; aaindex2b DVLA000003; spectrum b, green_red, chainB; util.cnc;
+alias idl, color gray80, chainA; color white, chainB; aaindex2b DVLA000003; spectrum b, green_red, chainB and interfaceB; util.cnc;
+
+alias hydro, color gray80, chainA; color white, chainB; aaindex2b NADH010101; spectrum b, green_white_yellow, chainB; util.cnc;
+alias ihydro, color gray80, chainA; color white, chainB; aaindex2b NADH010101; spectrum b, green_white_yellow, chainB and interfaceB; util.cnc;
+
+alias alpha, color gray80, chainA; color white, chainB; aaindex2b CHOP780201; spectrum b, red_green, chainB; util.cnc;
+alias ialpha, color gray80, chainA; color white, chainB; aaindex2b CHOP780201; spectrum b, red_green, chainB and interfaceB; util.cnc;
+
+alias beta, color gray80, chainA; color white, chainB; aaindex2b CHOP780202; spectrum b, red_green, chainB; util.cnc;
+alias ibeta, color gray80, chainA; color white, chainB; aaindex2b CHOP780202; spectrum b, red_green, chainB and interfaceB; util.cnc;
+
+alias hole, show surface; set surface_cavity_mode, 1;
+alias stik, hide all; cmd.show("cartoon"); cmd.show("sticks","not hydro");
+alias cbc, hide all; cmd.show("cartoon"); util.cbc;
+alias cnc, hide all; cmd.show("cartoon"); cmd.show("sticks","not hydro"); cmd.util.cbc("all"); cmd.util.cnc("all");
+alias cg, object=cmd.get_names()[0]; cmd.view('v', 'store'); util.protein_vacuum_esp(object, mode=2, quiet=0); cmd.disable(object + "_e_pot"); cmd.enable(object); cmd.view('v', 'recall');
+alias surf, cmd.extract('target', 'chainA'); cmd.view('v', 'store'); util.protein_vacuum_esp('target', mode=2, quiet=0); cmd.disable('target' + "_e_pot"); cmd.enable('target'); cmd.view('v', 'recall'); cmd.zoom('interface'); cmd.create('inter_bawls','interfaceB'); cmd.show('spheres','inter_bawls'); cmd.disable('inter_bawls'); cmd.create('inter_cage',"interfaceB"); cmd.show('mesh','inter_cage'); cmd.color('magenta','inter_cage'); cmd.util.cnc('inter_cage'); cmd.disable('inter_cage');
+
+alias bam, pdbdircyclerlite; set_cycler_command 'stix; show cartoon';
+
+alias bbo, hide all; show sticks, name Ca+C+O+N+CA
+alias hetsee, hide all; show cartoon; alignto asym*; zoom; select interfaceA, asym and chain A within 10 of (asym and chain B); select interfaceB, asym and chain B within 10 of (asym and chain A); select interfaceAA, not hydro within 3 of interfaceA; select interfaceBB, not hydro within 3 of interfaceB; show lines, interfaceAA; show lines, interfaceBB; select interfaceOri, resi and asym and interfaceAA or asym and interfaceBB; show sticks, interfaceOri; disable interface*; disable *_2_S* or *_3_S* or *_4_S* or or *_5_S*
+
+
+
+## Alias
+alias fancy_binder,\
+    set light_count,8 ;\
+    set spec_count,1;\
+    set shininess, 10;\
+    set specular, 0.25;\
+    set ambient,0.15;\
+    set direct,0;\
+    set reflect,1.5;\
+    set ray_shadow_decay_factor, 0.1;\
+    set ray_shadow_decay_range, 2;\
+    set ray_trace_mode, 1;\
+    set ray_shadows, on;\
+    set cartoon_highlight_color, grey80;\
+    set cartoon_oval_width, 0.5;\
+    set cartoon_loop_radius, 0.35;
+
+alias ribbonize,\
+    hide; show cartoon; set cartoon_fancy_helices, 1; \
+    hide cartoon, ( resname A or resname G or resname C or resname U or resname T ); \
+    show sticks, ( resname A or resname G or resname C or resname U or resname T ); \
+    util.rainbow; color hotpink, ( resname A or resname G or resname C or resname U or resname T )
+
+alias old_check,\
+    hide; show cartoon; set cartoon_fancy_helices, 1; \
+    hide cartoon, ( resname A or resname G or resname C or resname U or resname T ); \
+    show sticks, ( resname A or resname G or resname C or resname U or resname T );
+
+alias show_his,\
+    util.color_chains("(all and elem C)",_self=cmd); \
+    select his, resn HIS; \
+    show sticks, (his); \
+    hide (h.); \
+    cmd.disable('his');
+
+alias check,\
+    hide; show cartoon; set cartoon_fancy_helices, 1; \
+    show sticks; hide (h.);
+
+
+
+cmd.set_color("good_gray",       [220,220,220])             #dcdcdc
+cmd.set_color("good_teal",      [ 0.310, 0.725, 0.686 ])    #4FB9AF
+cmd.set_color("good_navaho",     [255,224,172]) 			#FFE0AC
+cmd.set_color("good_melon",      [255,198,178]) 			#FFC6B2
+cmd.set_color("good_pink",       [255,172,183]) 			#FFACB7
+cmd.set_color("good_purple",     [213,154,181]) 			#D59AB5
+cmd.set_color("good_lightblue",  [149,150,198]) 			#9596C6
+cmd.set_color("good_blue",       [102,134,197]) 			#6686C5
+cmd.set_color("good_darkblue",   [75,95,170]) 				#4B5FAA
+cmd.set_color("good_lightgreen", [0.80698522, 0.87647059, 0.87647056])
+
+cmd.do('set_color good_yellow, [250,199,44]')
+cmd.do('set_color good_teal, [40,176,193]')
+cmd.do('set_color good_green, [170,195,47]')
+cmd.do('set_color good_pink, [236,114,164]')
+cmd.do('set_color good_peach, [249,145,120]')
+cmd.do('set_color good_blue, [68,153,231]')
+cmd.do('set_color good_gray, [220, 220, 220]')
+cmd.do('set_color good_red, [228, 74, 62]')
+cmd.do('set_color white, [225, 228, 242]')
+
+
+cmd.do('set_color my_color_0, [0.6313725490196078, 0.788235294117647, 0.9568627450980393]')
+cmd.do('set_color my_color_1, [1.0, 0.7058823529411765, 0.5098039215686274]')
+cmd.do('set_color my_color_2, [0.5529411764705883, 0.8980392156862745, 0.6313725490196078]')
+cmd.do('set_color my_color_3, [1.0, 0.6235294117647059, 0.6078431372549019]')
+cmd.do('set_color my_color_4, [0.8156862745098039, 0.7333333333333333, 1.0]')
+cmd.do('set_color my_color_5, [0.8705882352941177, 0.7333333333333333, 0.6078431372549019]')
+cmd.do('set_color my_color_6, [0.9803921568627451, 0.6901960784313725, 0.8941176470588236]')
+cmd.do('set_color my_color_7, [0.8117647058823529, 0.8117647058823529, 0.8117647058823529]')
+cmd.do('set_color my_color_8, [1.0, 0.996078431372549, 0.6392156862745098]')
+cmd.do('set_color my_color_9, [0.7254901960784313, 0.9490196078431372, 0.9411764705882353]')
+cmd.do('set_color my_color_10, [0.5019607843137255, 0.6823529411764706, 0.9058823529411765]')
+cmd.do('set_color my_color_11, [0.9019607843137255, 0.5019607843137255, 0.5098039215686274]')
+
+cmd.set_color('limegreen', [ 0.00, 238.00, 0.00])
+cmd.set_color('blauw', [ 0.00, 191.00, 255.00])
+cmd.set_color('goud',[ 255.00, 193.00, 37.00])
+cmd.set_color('blauw2',[ 30, 144,255])
+cmd.set_color('blauw3',[ 0, 154, 205])
+cmd.set_color('crimson',[ 220, 20, 60])
+cmd.set_color('indianred',[ 176, 23, 31])
+cmd.set_color('cadmiumorange',[ 255, 97, 3])
+cmd.set_color('orangered1', [ 255, 69, 0])
+cmd.set_color('palecyan1',[ 180, 255, 255])
+cmd.set_color('palecyan2',[ 166, 255, 255])
+cmd.set_color('red', [ 238, 64, 0])
+
+cmd.do('set_color  C1, [120, 190, 100]')
+cmd.do('set_color  C2, [255, 204, 102]')
+cmd.do('set_color  C3,[255, 153, 102]')
+cmd.do('set_color  C4,[102, 204, 255]')
+cmd.do('set_color  C5,[0, 153, 153]')
+cmd.do('set_color  C6, [147,112,219]')
+cmd.do('set ray_trace_mode, 1')
+cmd.do('set ray_shadows,0')
+cmd.do('set ray_opaque_background, off')
+cmd.do('viewport 800, 800')
+cmd.do('set specular, 0')
+cmd.do('set ray_shadow, off')
+cmd.do('set antialias, 2')
+cmd.do('set ray_trace_mode, 1')
+cmd.do('set ray_trace_disco_factor, 1')
+cmd.do('set ray_trace_gain, 0.1')
+cmd.do('set power, 0.2')
+cmd.do('set ambient, 0.4')
+cmd.do('set direct, 0.45')
+cmd.do('set cartoon_sampling, 10')
+cmd.do('set ray_trace_color, black')
+cmd.do('set line_width, 3')
+cmd.do('set cartoon_transparency, 0')
+cmd.do('set cartoon_flat_sheets, off')
+
+
+cmd.bg_color("white")
+run my_setting.py
+run my_setting2.py
+run pymol_utils_2.py
